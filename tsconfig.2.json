@@ -1,0 +1,22 @@
+{
+  "extends": "/home/jm/Projects/Config/tsc/tsconfig.module",
+  "compilerOptions": {
+    "typeRoots": ["node_modules/@types", "./typings", "node_modules/*/*"],
+    "outDir": "./dist/",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
+  ],
+  "exclude": [
+    "test",
+    "__ignored__",
+    "node_modules",
+    "build",
+    "dist"
+  ]
+}
