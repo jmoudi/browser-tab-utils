@@ -4,9 +4,17 @@
   "main": "dist/index.js",
   "license": "MIT",
   "devDependencies": {
+    "@types/chrome": "^0.0.89",
+    "@types/firefox-webext-browser": "",
+    "@types/jest": "",
+    "@types/node": "",
+    "@types/webpack": "",
+    "dotenv-webpack": "^1.7.0",
     "webpack-chrome-extension-reloader": "^1.3.0"
   },
   "dependencies": {
-    "dotenv-webpack": "^1.7.0"
+    "emittery": "^0.5.1",
+    "lodash": "",
+    "micromatch": ""
   }
 }

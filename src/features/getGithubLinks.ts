@@ -34,7 +34,7 @@ function getGitInfo(url){
             username, 
             pkgname
         }
-        log(res)
+        ;
     }
     
     return res;
@@ -46,19 +46,29 @@ function generateCliCmd(init){
     const cmd = `git clone -- '${url}' ${destdir}`;
     return cmd;
 }
+
 async function main(){
     try {
     const tabs = await browser.tabs.query({
         //currentWindow:true,
         //lastFocusedWindow: true,
-        url: ['*://*.github.com/*']
+        url: ['*://github.com/*/*']
     }); //, highlighted:true});
-    log(tabs);
-    const gi = tabs.filter(t => /github/.test(t.url)).map(t => getGitInfo(t.url));
+    log(tabs); 
+    const tabReducer = (acc,tab) => {
+        const info = getGitInfo(tab.url);
+        if(info){
+            acc.add(info.);
+        }
+        return acc;
+    }
+    const gi = tabs.reduce((acc,t) => handleGithubTab(t.url));
+    const gi = tabs.map(t => getGitInfo(t.url));
     log(`gi`, gi);
     const cmds = uniq(gi).map(g => generateCliCmd(g)); //.then(onTabs);
     log(`TOTAL:`, cmds.length);
-    console.log(cmds.join(`\n`));
+    tabs.forEach(t => browser.tabs.remove);
+   console.log(cmds.join(`\n`));
 } catch(err){console.warn(err)}
 }; 
 main();
@@ -69,3 +79,18 @@ function onTabs(tabs){
     tabs.forEach(format);
 } catch(err){console.warn(err)}
 };
+
+browser.tabs.query({
+    //currentWindow:true,
+    //lastFocusedWindow: true,
+    url: ['*://github.com/*/*']
+}).then(t => browser.tabs.remove(t.map(tab => tab.id)))
+
+
+/api/products   // lists all
+/api/products/:productid //lists all properties
+/api/suppliers   //lists all
+/api/suppliers/:supplierid //lists all properties
+/api/suppliers/:supplierid?productid=:productid // list only product :productid
+/api/suppliers/:supplierid?productid=:productid // list only product :productid
+/api/suppliers/:supplierid?filter=products&pid=:id
