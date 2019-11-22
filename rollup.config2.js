@@ -1,33 +1,34 @@
 //@ts-check 
 import {
     baseConfig, build, mergeOptions, AliasPlugin,RollupOptions,
-     createTsPlugin ,CommonjsPlugin,ResolvePlugin,SourcemapsPlugin,
+     createTsPlugin ,CommonjsPlugin,ResolvePlugin,
     ReplacePlugin,TsPathsPlugins
 } from 'rollup-tools';
 import path from 'path'
-import { onWarn, defaultConfig } from './rollup.base';
 
 const lodashpath = path.resolve('/home/jm/Projects/Modules/ts/core/fp', 'node_modules', 'lodash');
 const lodashpath2 = path.resolve('/home/jm/Projects/Modules/ts/core/fp', 'dist/index.js');
 
+console.log(`fdsf`, lodashpath2)
 
-
-const getPlugins = () => {
-    const plugins = [
-    
+/** @type {RollupOptions} */
+const c = {
+    input: './src/background.ts',
+    output: {
+        file: './dist/background.js',
+        name: path.basename('./dist/background.js')
+    },
+    plugins: [
+        createTsPlugin({appRoot: process.cwd() }, {}),
         //TsPathsPlugins(),
         ResolvePlugin({
-            //jsnext: true, main: true,
-            //modulesOnly: true,
-            extensions: ['.ts', '.tsx', '.js', '.mjs', '.json', '.jsx', '.node' ],
-            preferBuiltins: false
-          }), // so Rollup can find 'ms'
+            //mainFields
+            modulesOnly: true
+        }),
         CommonjsPlugin({
             include: [
-                
                 lodashpath2,
-                /node_modules/,
-                "node_modules" //
+                "node_modules" ///node_modules/
             ],
             // When 'rollup-plugin-commonjs' fails to properly convert the CommonJS modules to ES6 one has to manually name the exports
             // https://github.com/rollup/rollup-plugin-commonjs#custom-named-exports
@@ -51,42 +52,13 @@ const getPlugins = () => {
             }
         }),
 
-        createTsPlugin({appRoot: process.cwd() }, {}),
-      SourcemapsPlugin({ 
-        include: [
-            lodashpath2,
-            /node_modules/
-        ]
-      }) //SourcemapsPlugin({include: [/node_modules/]}),
-
  /*        ReplacePlugin({
             '@std/fp': () => '/home/jm/Projects/Modules/ts/core/fp'
         }) */
     ]
-    return plugins;
-}
-
-    
-
-
-/** @type {RollupOptions} */
-const c = {
-    context: process.cwd(),
-    input: './src/background.ts',
-    output: {
-        file: './dist/background.js',
-        name: path.basename('./dist/background.js')
-    },
-    // @ts-ignore
-    plugins: getPlugins()
 
 }
-const crconf = () => {
-    const conf = mergeOptions([
-        defaultConfig, 
-    c]);
-    console.log(`conf`, conf)
-    return conf
-}
+const conf = mergeOptions([baseConfig(), c]);
+console.log(`r`, conf)
 
-export default crconf();
+export default {...conf};

@@ -22,14 +22,15 @@ export const getTabs = (queryInfo) => {
     });
 };
 
-export const getWindow = (windowId) => {
-    return new Promise((resolve) => {
+export const getWindow = (windowId) => browser.windows.get(windowId);
+
+/*     return new Promise((resolve) => {
         chrome.windows.get(windowId, windows => {
             if (chrome.runtime.lastError) console.error("getWindow error:", chrome.runtime.lastError.message);
             resolve(chrome.runtime.lastError ? null : windows);
         });
     });
-};
+}; */
 
 export const getWindows = () => {
     return new Promise((resolve) => {

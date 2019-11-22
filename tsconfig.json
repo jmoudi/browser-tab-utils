@@ -12,9 +12,13 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@std/fp": [ "/home/jm/Projects/Modules/ts/core/fp" ]
+      "@std/fp": [ "/home/jm/Projects/Modules/ts/core/fp" ] // important
     }
   },
+  "references": [
+    {"path": "../../Modules/ts/core/fp"},
+    {"path": "../../Modules/ts/tools/rollup"}
+  ],
   //"files": ["./src/index.ts"],
   "include": [
     "./src/**/*.ts",

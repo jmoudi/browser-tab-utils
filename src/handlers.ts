@@ -1,4 +1,4 @@
-import { isBlankUrl } from './urlUtils';
+import { isBlankUrl } from './utils/url-utils';
 import { logger } from './utils/utils';
 import { findDuplicateTabs } from './utils/helpers';
 

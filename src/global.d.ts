@@ -13,6 +13,8 @@ declare interface Global {
     state: State;
     extension: browser.management.ExtensionInfo,
 };
+//export type global = Window & RedirectAPI;
+
 declare const global: Global;
 
 //export {global, Global,Settings}

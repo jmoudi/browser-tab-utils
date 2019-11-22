@@ -1,6 +1,6 @@
 // @ts-check
 const { 
-  WebExtPlugin
+  WebExtPlugin, TsconfigPathsPlugin
 } = require('@webpack-tools/plugins'); 
 const { 
   merge, path
@@ -51,6 +51,9 @@ module.exports = merge(baseConfig(), {
     new ChromeExtensionReloader()
   ] */
   plugins:[
+/*     new TsconfigPathsPlugin({
+
+    }), */
     webExt
   ]
 });
