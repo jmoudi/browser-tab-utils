@@ -1,13 +1,13 @@
 // @ts-check
 const { 
-  WebExtWebpackPlugin
-} = require('/home/jm/Projects/Tools/node/webpack/packages/plugins'); 
+  WebExtPlugin
+} = require('@webpack-tools/plugins'); 
 const { 
   merge, path
-} = require('/home/jm/Projects/Tools/node/webpack/packages/utils');
+} = require('@webpack-tools/utils');
 const { 
   baseConfig
-} = require('/home/jm/Projects/Tools/node/webpack/packages/configs');
+} = require('@webpack-tools/configs');
 
 
 const CONTEXT = process.cwd();
@@ -20,8 +20,10 @@ const DIST = path.resolve(__dirname, "dist");
  ],
   { copyUnmodified: false, logLevel: "debug" }
 ); */
-// @ts-ignore
-const webExt = new WebExtWebpackPlugin({
+
+
+
+const webExt = new WebExtPlugin({
   startUrl: [
     'about:debugging',
     //'https://danbooru.donmai.us/posts'
@@ -39,7 +41,7 @@ const webExt = new WebExtWebpackPlugin({
 
 
 
-module.exports = merge(baseConfig, {
+module.exports = merge(baseConfig(), {
   entry: {
     page: './src/background.ts'
   },

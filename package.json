@@ -1,10 +1,23 @@
 {
   "name": "tab-utils",
   "version": "1.0.0",
-  "main": "dist/index.js",
-  "license": "MIT",
+  "main": "./dist/background.js",
+  "typings": "./dist/background.d.ts",
+  "browser": "./dist/background.js",
+  "scripts": {
+    "bundlerr": "rollup -c rollup.config.js",
+    "bundle-watch": "webpack -w",
+    "bundle": "webpack",
+    "bundle-test": "webpack --config webpack.test.js",
+    "tsc:test": "tsc --listEmittedFiles --noEmit",
+    "lint": "eslint -c /home/jm/Projects/Modules/config/eslint.react.json",
+    "test": "jest --watch",
+    "run": "web-ext run --source-dir=./dist --start-url=about:debugging",
+    "serve": "webpack-dev-server --config webpack.config.js",
+    "compile": "tsc --build --listFiles"
+  },
   "devDependencies": {
-    "@types/chrome": "^0.0.89",
+    "@types/chrome": "",
     "@types/firefox-webext-browser": "",
     "@types/jest": "",
     "@types/node": "",
@@ -13,8 +26,28 @@
     "webpack-chrome-extension-reloader": "^1.3.0"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.141",
+    "@types/micromatch": "^3.1.0",
+    "@types/qs": "^6.5.3",
+    "@types/urijs": "^1.19.4",
+    "@types/url-join": "^4.0.0",
+    "build-url": "^1.3.3",
+    "conf": "^6.1.0",
     "emittery": "^0.5.1",
-    "lodash": "",
-    "micromatch": ""
+    "idb-keyval": "^3.2.0",
+    "linkify-it": "^2.2.0",
+    "linkifyjs": "^2.1.8",
+    "lodash": "^4.17.15",
+    "micromatch": "",
+    "mobx": "^5.15.0",
+    "normalize-url": "^4.5.0",
+    "parse-path": "^4.0.1",
+    "parse-url": "^5.0.1",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^6.2.1",
+    "url-join": "^4.0.1",
+    "url-parse-lax": "^4.0.0",
+    "url-template": "^2.0.8",
+    "validator": "^11.1.0"
   }
 }

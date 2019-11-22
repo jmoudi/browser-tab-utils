@@ -1,4 +1,19 @@
  
+
+type Context = browser.contextMenus.OnClickData
+export function createMiddleware(ctx){
+    const ctx: Context = { info };
+}
+export function cickMiddleware(ctx){
+    const ctx: Context = { info };
+
+}
+
+browser.contextMenus.onClicked.addListener(createMiddleware(cickMiddleware()))
+
+
+
+
 const webNavigation = browser.webNavigation;
 const tabs = browser.tabs;
 
@@ -9,6 +24,7 @@ export function createUrlFilter(patterns: string[]){
         url: filter
     }
 }
+
 
 export async function bindWebNav(registry: Map<string, JsScript>){
     for (const [name,js] of registry){
