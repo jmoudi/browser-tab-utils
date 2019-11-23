@@ -36,7 +36,7 @@ export const defaultConfig = {
     output: {
         format: 'umd',
         sourcemap: true,
-        exports: 'named',
+        //exports: 'named',
         interop: true,
     },
 

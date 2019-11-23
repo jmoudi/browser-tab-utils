@@ -5,9 +5,10 @@
   "typings": "./dist/background.d.ts",
   "browser": "./dist/background.js",
   "scripts": {
-    "bundlerr": "rollup -c rollup.config.js",
-    "bundle-watch": "webpack -w",
-    "bundle": "webpack",
+    "bundler:r": "rollup -c rollup.config.js",
+    "bundle:rw": "rollup -c rollup.config.js -w",
+    "bundle:w-watch": "webpack -w",
+    "bundle:w": "webpack",
     "bundle-test": "webpack --config webpack.test.js",
     "tsc:test": "tsc --listEmittedFiles --noEmit",
     "lint": "eslint -c /home/jm/Projects/Modules/config/eslint.react.json",

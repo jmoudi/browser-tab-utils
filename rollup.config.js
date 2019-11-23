@@ -22,6 +22,8 @@ const getPlugins = () => {
             extensions: ['.ts', '.tsx', '.js', '.mjs', '.json', '.jsx', '.node' ],
             preferBuiltins: false
           }), // so Rollup can find 'ms'
+          createTsPlugin({
+            appRoot: process.cwd() }, {}),
         CommonjsPlugin({
             include: [
                 
@@ -51,7 +53,8 @@ const getPlugins = () => {
             }
         }),
 
-        createTsPlugin({appRoot: process.cwd() }, {}),
+/*         createTsPlugin({
+            appRoot: process.cwd() }, {}), */
       SourcemapsPlugin({ 
         include: [
             lodashpath2,
