@@ -32,7 +32,7 @@ const copy = new CopyWebpackPlugin([
   { from: "assets/manifest.json",
    flatten: true,
     transform: (content, path) => {
-      return template.exec(content.toString())
+      return template.exec(content.toString()) //Buffer.from(
   }
   }
   ],
@@ -63,6 +63,20 @@ const webExt = new WebExtPlugin({
 })
 
 
+/* new ManifestPlugin({
+  fileName: 'asset-manifest.json',
+  publicPath: publicPath,
+  generate: (seed, files) => {
+    const manifestFiles = files.reduce(function(manifest, file) {
+      manifest[file.name] = file.path;
+      return manifest;
+    }, seed);
+
+    return {
+      files: manifestFiles,
+    };
+  },
+}), */
 
 
 module.exports = merge(baseConfig(), {

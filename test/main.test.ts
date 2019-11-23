@@ -2,6 +2,10 @@ import * as self from '../src';
 const log = console.log; //import {Logger,log} from '@std/log';
   import {MustacheReplacer} from '@std/string';
 
+  groupDuplicates([
+    { url: "http://aaa/#joj"}, { url: "http:bbb/#sdsdf"}, { url: "http://aaa"}, { url: "http:ccc/#pp" }, 
+    { url: "http:ccc/#gzrd" }, { url: "http:ddd/" }, { url: "http:aaa/#pkpkd"}
+])
   
 const pkg = {
     name: "tab-utils",

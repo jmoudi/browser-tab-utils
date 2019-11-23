@@ -1,5 +1,10 @@
 cd /home/jm/Examples/_UNSORTED_/
 
+https://github.com/chzesa/js-syncqueue
+https://github.com/chzesa/we-tabcache
+
+
+
 function bbbb(){
     git clone -- 'https://github.com/kaergel/docker-vdirsyncer' kaergel_docker-vdirsyncer
 git clone -- 'https://github.com/RipMeApp/ripme' RipMeApp_ripme

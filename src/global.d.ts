@@ -1,4 +1,9 @@
+type onBeforeNavigateHandler = Parameters<typeof browser.webNavigation.onBeforeNavigate.addListener>[0];
+type onCreatedHandler = Parameters<typeof browser.tabs.onCreated.addListener>[0];
+type onUpdatedHandler = Parameters<typeof browser.tabs.onUpdated.addListener>[0];
 
+
+type Tab = browser.tabs.Tab;
 interface State {
     initialized: boolean; 
 }
@@ -18,3 +23,19 @@ declare interface Global {
 declare const global: Global;
 
 //export {global, Global,Settings}
+
+
+type EventUrlFilter = browser.webNavigation.EventUrlFilters;
+type UrlFilter = browser.events.UrlFilter //browser.webNavigation.EventUrlFilters;
+
+
+declare namespace WebReq {
+
+    type Event = keyof typeof chrome.webNavigation;
+    type NavDetails = chrome.webNavigation.WebNavigationParentedCallbackDetails;
+    type RequestFilter = chrome.webRequest.RequestFilter
+    type EventFilter = chrome.webNavigation.WebNavigationEventFilter;
+    type OnBeforeRequestDetails = chrome.webRequest.WebRequestBodyDetails;
+    type HeadersDetails = chrome.webRequest.WebResponseHeadersDetails;
+}
+

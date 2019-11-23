@@ -1,3 +1,8 @@
+
+
+IDEA: single listener point for new tabs instead of severa; with webNavigation, tabs, etc.
+These add the new tab to the observable map. then on add or remove, handlers are fired
+
 import ChromeExtensionReloader from 'webpack-chrome-extension-reloader';
 import Dotenv from 'dotenv-webpack';
 

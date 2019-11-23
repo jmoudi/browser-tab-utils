@@ -1,4 +1,94 @@
 
+export function getDuplicates(tabs: Tabs.Tab[]){
+ 
+}
+
+export function jumpToActiveMedia(tabs: Tabs.Tab[]) {
+
+	}
+
+export function focus(tab: Tabs.Tab) {
+
+	}
+
+    export async function focusPrev2(ctx: App) {
+        const currentTab = await tabs.query({ active: true });
+        log(`cur`, currentTab);
+    }
+    export async function focusNext2(ctx: App) {
+        const currentTab = await tabs.query({ active: true });
+        log(`cur`, currentTab);
+    
+    }
+    export async function focusPrev() {
+        console.time('1')
+        const currentTab = await browser.tabs.query({ active: true });
+        browser.tabs.update(currentTab[0].id as number - 1, {
+            active: true
+        });
+        console.timeEnd('1');
+        console.log(`cur`, currentTab);
+    }
+    
+    export async function focusNext() {
+        console.time('1')
+        const currentTab = await browser.tabs.query({ active: true });
+        browser.tabs.update(currentTab[0].id as number + 1, {
+            active: true
+        });
+        console.timeEnd('1');
+        console.log(`cur`, currentTab);
+    }
+    
+    export function forceStopLoading(tab: Tabs.Tab) {
+        const id = tab.id ? tab.id : 1;
+        if (tab.status !== "complete") {
+            browser.tabs.update(id, { active: true });
+        }
+    }
+    
+    export function getSelected(){
+            return browser.tabs.query({ highlighted: true });
+    }
+    export function getAll(){
+            return browser.windows.getAll({ populate: true });
+        }
+    export function getAllinWindow(){
+        return browser.tabs.query({ currentWindow: true });
+    }
+
+
+    export async function updateTabs(scripts: JsScriptRegistry){
+        const tabs = await browser.tabs.query({ status: 'complete' }); 
+        for (const tab of tabs){ 
+            for (const [name,js] of scripts){
+                if (!tab.id || !js.matches || !js.code){ throw new Error(`js.matches`); }
+                const isMatch = js.matches.some(r => new RegExp(r).test(tab.url as string));
+                if (isMatch){ 
+                    log(`isMatch`, tab, name, js.code.length);
+                    injectScript(tab.id, js.code);
+    /*                 browser.tabs.executeScript(tab.id, {
+                        code: js.code,
+                        runAt: `document_start`
+                    });   //this.injectScript(tab.id, { name }); */
+                }
+            }
+        }
+    }
+    
+    
+    export async function updateActiveTab(script: JsScript){
+        const activeTab = await tabs.query({ currentWindow: true, active: true }).then(t => t[0]);
+        if (!activeTab.id){ throw new Error(`tab`); }
+        const code = script.code
+        if (!code){ throw new Error(`code`); }
+        tabs.executeScript(activeTab.id, {
+            code: code,
+            runAt: `document_start`
+        })
+    }
+
+
 export const isTabComplete = tab => tab.status === "complete";
 
 export const isTabLoading = tab => tab.status === "loading";

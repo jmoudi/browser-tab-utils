@@ -3,8 +3,8 @@ import { logger } from './utils/utils';
 import { findDuplicateTabs } from './utils/helpers';
 
 
-type onBeforeNavigateHandler = Parameters<typeof browser.webNavigation.onBeforeNavigate.addListener>[0];
-type onCreatedHandler = Parameters<typeof browser.tabs.onCreated.addListener>[0];
+
+
 
 declare const global: Global;
 export const handleTab = async (details) => {
@@ -42,8 +42,8 @@ export const closeDuplicateTabs = async (opts) => {
 	const res = await findDuplicateTabs();
 	logger.info(`findDuplicateTabs`, res);
 }
-/* 
-const onUpdatedTab = (tabId, changeInfo, tab) => {
+ 
+const onUpdatedTab: onUpdatedHandler = (tabId, changeInfo, tab) => {
 	if ((changeInfo.url || changeInfo.status) && !isBlankUrl(tab.url)) {
 		if (tab.status === "complete") {
 			if (options.autoCloseTab) {
@@ -53,7 +53,7 @@ const onUpdatedTab = (tabId, changeInfo, tab) => {
 				refreshDuplicateTabsInfo(tab.windowId);
 			}
 		}
-		else if (!environment.isFirefox62Compatible) {
+		else {
 			if (tab.active) {
 				setBadge({ tabId: tab.id, windowId: tab.windowId });
 			}
