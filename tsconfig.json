@@ -1,14 +1,8 @@
 {
   "extends": "/home/jm/Projects/Config/tsc/tsconfig.module",
   "compilerOptions": {
-/*     "target": "es2015",
-    "module": "commonjs",
-     */
     "rootDir": "./src/",
     "outDir": "./dist/",
-/*     "module": "es2015",
-    "target": "es2015",
-    "sourceMap": true, */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],

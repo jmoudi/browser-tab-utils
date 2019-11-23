@@ -14,7 +14,7 @@ export const global: Global = {} as any;
 async function main(){
     console.log(global);
     const runner = new Runner();
-    runner.init();
+    await runner.init();
     console.log(`app started successfully`, Boolean(runner));
 
 };

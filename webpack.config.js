@@ -1,6 +1,6 @@
 // @ts-check
 const { 
-  WebExtPlugin, TsconfigPathsPlugin
+  WebExtPlugin, TsconfigPathsPlugin, CopyWebpackPlugin
 } = require('@webpack-tools/plugins'); 
 const { 
   merge, path
@@ -8,23 +8,47 @@ const {
 const { 
   baseConfig
 } = require('@webpack-tools/configs');
+const { 
+  MustacheReplacer
+} = require('@std/string');
 
 
+const pkg = {
+  name: "tab-utils",
+  version: "1.0.1"
+
+}
+const template = new MustacheReplacer({
+    name: pkg.name,
+    version: pkg.version
+});
 const CONTEXT = process.cwd();
-const DIST = path.resolve(__dirname, "dist");
+const DIST = path.resolve(process.cwd(), "dist");
 
 
-/* const copy = new CopyWebpackPlugin([
-  { from: "src/assets/manifest.json", flatten: false },
-  { from: "src/assets", flatten: false },
- ],
-  { copyUnmodified: false, logLevel: "debug" }
-); */
+//const copyTransform = (content: string, path: string)
 
+const copy = new CopyWebpackPlugin([
+  { from: "assets/manifest.json",
+   flatten: true,
+    transform: (content, path) => {
+      return template.exec(content.toString())
+  }
+  }
+  ],
+  { 
+    copyUnmodified: false, 
+    logLevel: "debug",
+    context: 'src',
+    
+  }
+);
+ 
 
 
 const webExt = new WebExtPlugin({
   startUrl: [
+    'about:devtools-toolbox?type=extension&id=duplicate-tabs%40jmoudi',
     'about:debugging',
     //'https://danbooru.donmai.us/posts'
     //'dist/browser-action.html',
@@ -43,19 +67,20 @@ const webExt = new WebExtPlugin({
 
 module.exports = merge(baseConfig(), {
   target: "web",
-  context: process.cwd(),
+  devtool: "source-map",
+  //context: process.cwd(),
   entry: {
-    page: './src/background.ts'
+    background: './src/background.ts'
   },
   output: {
     //We don't specify the library option so the library is exported to the root namespace.
     filename: '[name].js',
-    //chunkFilename: '[name].chunk.js',
-    //library: '[name]',
+    chunkFilename: '[name].chunk.js',
+    library: '[name]',
     libraryTarget: 'umd',
-    //umdNamedDefine: true,
-    //publicPath: '/',
-    //pathinfo: false,
+    umdNamedDefine: true,
+    publicPath: '/',
+    pathinfo: true,
     devtoolModuleFilenameTemplate: (info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
 },
 /*   resolve: {
@@ -72,6 +97,7 @@ module.exports = merge(baseConfig(), {
 /*     new TsconfigPathsPlugin({
 
     }), */
+    copy,
     webExt
   ]
 });

@@ -1,8 +1,7 @@
 {
-  "name": "tabs-utils",
+  "name": "{{name}}",
 
   "permissions": [
-    "file:///*",
     "<all_urls>",
     "activeTab",
     "browserSettings",    
@@ -29,13 +28,15 @@
   },
   "commands": {
     "close-duplicate-tabs": {
-            "suggested_key": { "default": "Alt+Shift+C" },
-            "description": "duplicate"
+      "suggested_key": { 
+        "default": "Alt+Shift+C" 
+      },
+          "description": "duplicate"
     }
   },
 
 
   "manifest_version": 2,
-  "version": "1.0.0",
-  "applications": { "gecko": { "id": "duplicate-tabs@jmoudi" }}
+  "version": "{{version}}",
+  "applications": { "gecko": { "id": "{{name}}@jmoudi" }}
 }

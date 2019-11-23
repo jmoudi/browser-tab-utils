@@ -1,6 +1,18 @@
 import * as self from '../src';
 const log = console.log; //import {Logger,log} from '@std/log';
+  import {MustacheReplacer} from '@std/string';
+
   
+const pkg = {
+    name: "tab-utils",
+    version: "1.0.1"
+  
+  }
+  const template = new MustacheReplacer({
+      name: pkg.name,
+      version: pkg.version
+  });
+
 beforeAll(async () => {
      
 });
@@ -8,13 +20,9 @@ beforeAll(async () => {
 describe(`111`, () => {
 
 
-    test(`connected`, async () => {
-        log(`db`, db)
-        expect(db).toBeTruthy()
-    });
- 
+  
     test(`res`, async () => {
-        const res = await db.driver.raw(`SELECT * FROM sqlite_master WHERE (type == 'table' AND name != 'sqlite_stat1');`);
+        const res = template.exec("dsfcsdfsdf {{name}} dsfdshf {{version}} sdfsdf");
         log(`res`, res)
         expect(res).toBeTruthy()
     });

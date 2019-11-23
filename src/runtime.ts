@@ -1,5 +1,5 @@
 import { initializeOptions } from './utils/settings';
-import {onCreatedTab,onBeforeNavigate,onCommand} from '@/handlers';
+import {onCreatedTab,onBeforeNavigate,onCommand, closeDuplicateTabs} from '@/handlers';
 
 
 export const logger = console;
@@ -7,6 +7,13 @@ export const logger = console;
 //export const global = {} as any;
 
 declare const global: Global;
+
+const app = {
+    commands:{
+	"close-duplicate-tabs": closeDuplicateTabs
+    }
+
+}
 
 async function initGlobal(){
     global.debug = false;
@@ -42,6 +49,7 @@ export class Runner {
         browser.tabs.onCreated.addListener(onCreatedTab);
         browser.webNavigation.onBeforeNavigate.addListener(onBeforeNavigate);
         browser.commands.onCommand.addListener(onCommand);
+        logger.info('Gddfdfdsfl', global, app);
 
     }
 }
