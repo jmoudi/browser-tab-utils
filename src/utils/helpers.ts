@@ -9,8 +9,9 @@ const normalizeTabUrl = (url) => url
 export const getTabs = () => browser.tabs.query({ 
     windowType: 'normal',
     status: 'complete'
-})
+});
 
+const getCurId = () => (browser.windows.WINDOW_ID_CURRENT)
  
 export const findDuplicateTabs = async () => {
     //const wm = new WeakMap<object, browser.tabs.Tab[]>();

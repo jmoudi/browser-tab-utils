@@ -1,24 +1,24 @@
 import { isBlankUrl } from './utils/url-utils';
+
+
 import { logger } from './utils/utils';
-import { findDuplicateTabs } from './utils/helpers';
+import { getSettings } from './runtime';
 
 
 
-
-
-declare const global: Global;
 export const handleTab = async (details) => {
 	logger.debug("handleTab", details);
     //const wm = new WeakMap<object, browser.tabs.Tab[]>();
-	const res = await findDuplicateTabs();
-	logger.info(`dssdfuuu`, res);
+	//const res = await findDuplicateTabs();
+	//logger.info(`dssdfuuu`, res);
 }
 
-export const onCreatedTab: onCreatedHandler = (tab) => {
+export const onCreatedTab: onCreatedHandler = async (tab) => {
 	logger.debug("haonCreatedTabndleTab", tab);
 	handleTab(tab);
+	const settings = await getSettings();
 	if (tab.status === "complete" && !isBlankUrl(tab.url)) {
-		if (global.settings.autoCloseTab) {
+		if (settings.autoCloseTab) {
 			//handleTab(tab);
 		}
 	}
@@ -26,23 +26,20 @@ export const onCreatedTab: onCreatedHandler = (tab) => {
 export const onBeforeNavigate: onBeforeNavigateHandler = async (details) => {
 	logger.debug("onBeforeNavigate", details);
 	handleTab(details);
-	if (global.settings.autoCloseTab && (details.frameId == 0) && (details.tabId !== -1) && !isBlankUrl(details.url)) {
+	const settings = await getSettings();
+	if (settings.autoCloseTab && (details.frameId == 0) && (details.tabId !== -1) && !isBlankUrl(details.url)) {
 	}
 };
 
-declare const app: any
-export const onCommand = (cmdStr: string) => {
+/* export const onCommand = (cmdStr: string) => {
 	logger.debug("onCommand", cmdStr,  app.commands);
 	if (app.commands[cmdStr]){
 		app.commands[cmdStr](browser.windows.WINDOW_ID_CURRENT);
 	}
 };
+ */
 
-export const closeDuplicateTabs = async (opts) => {
-	const res = await findDuplicateTabs();
-	logger.info(`findDuplicateTabs`, res);
-}
- 
+/*
 const onUpdatedTab: onUpdatedHandler = (tabId, changeInfo, tab) => {
 	if ((changeInfo.url || changeInfo.status) && !isBlankUrl(tab.url)) {
 		if (tab.status === "complete") {

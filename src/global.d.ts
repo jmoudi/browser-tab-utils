@@ -6,7 +6,11 @@ interface TabUtilsOpts {
 
 }
 
-type Tab = browser.tabs.Tab;
+namespace Tabs {
+    type Tab = browser.tabs.Tab;
+}
+
+
 interface State {
     initialized: boolean; 
 }
@@ -21,6 +25,12 @@ interface Global {
     state: State;
     extension: browser.management.ExtensionInfo,
 };
+
+interface App {
+    actions: Map<string,any>
+    commands: Map<string,any>
+}
+
 //export type global = Window & RedirectAPI;
 
 declare const global: Global;

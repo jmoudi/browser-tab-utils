@@ -1,0 +1,37 @@
+permissions:
+  - <all_urls>
+  - activeTab
+  - browserSettings
+  - bookmarks
+  - browsingData
+  - contextMenus
+  - downloads
+  - history
+  - menus
+  - menus.overrideContext
+  - notifications
+  - nativeMessaging
+  - sessions
+  - storage
+  - tabs
+  - webNavigation
+  - webRequest
+  - webRequestBlocking
+  - theme
+  - contextualIdentities
+background:
+  scripts:
+    - background.js
+commands:
+  Tabs:closeDuplicates:
+    suggested_key:
+      default: Alt+Shift+C
+    description: duplicate
+  Tabs:focusNext:
+    suggested_key:
+      default: Alt+C
+    description: aduplicate
+  Tabs:focusPrev:
+    suggested_key:
+      default: Alt+X
+    description: aduplicate

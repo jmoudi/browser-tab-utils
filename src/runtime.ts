@@ -1,25 +1,14 @@
-import { initializeOptions } from './utils/settings';
-import {onCreatedTab,onBeforeNavigate,onCommand, closeDuplicateTabs} from '@/handlers';
 
+import {onCreatedTab,onBeforeNavigate} from '@/handlers';
 
-export const logger = console;
+import {mapKeys,mapValues,reduce} from '@std/fp';
+import { logger } from '@/utils/utils';
 
-//export const global = {} as any;
-
-//declare const global: Global = {} as never;
-const global: Global = {} as never;
-const app = {
-    commands:{
-	"close-duplicate-tabs": closeDuplicateTabs
-    }
-
-}
-
+ 
 async function initGlobal(name = 'TabUtils'){
     const defaultSettings = {
-        debug: false,
         showNotification: true,
-        env: process.env
+        autoCloseTab: true,
     }
     const defaultState = {
         initialized: false
@@ -42,23 +31,73 @@ async function initGlobal(name = 'TabUtils'){
     global.debug = false;
     return global;
 }
-export async function init(global: Global) {
-    try {
-        await initGlobal();
-        //await initObservers();
-        //browser.runtime.onMessageExternal.addListener(handleTSTMessage);
+export const initExtension = (name, opts?: Global) => {
+    if (typeof window !== 'object'){
+        throw new TypeError('Not in browser-like environment.');
     }
-    catch (err) {
-        console.warn(err);
+    if (!window[name]){
+        // @ts-ignore
+        window[name] = opts //{...opts};
+    } else {
+        return window[name]
     }
+    return window[name];
+};
+
+/**
+ * Loads TabUtils global object or returns one, if already loaded. This function is
+ * idempotent - you can call it as many times as you like. Throws if not successful.
+ */
+
+/**
+ * Synchronously tries to returns TabUtils global object. Throws if not successful.
+ */
+export async function getSettings(){
+    return global.settings
 }
+
+/**
+ * explicit import syntax to highlight that module is important
+ */
+const importModule = async () => {
+    const mod = await import('./api/tabs-api');
+    logger.info(mod);
+    return mod
+}
+
+const app: App = {
+    actions: {},
+    commands: {}
+} as App;
+
+
+
+export const loadActions = async (cmdStr: string) => {
+    const apimod = await importModule();
+    const functionsMap = reduce(apimod, (a, f) => {
+        const createName = (fn, namespace) => `${namespace}:${fn.name}`
+        if (typeof f == 'function'){a.set(createName(f, 'Tabs'), f); return a }
+    }, new Map<string, Function>());
+    app.actions = functionsMap;
+    app.commands = functionsMap;
+    logger.debug("functionsMap", functionsMap);
+};
+
+export const onCommand = (cmdStr: string) => {
+    const handler = app.commands.get(cmdStr);
+    logger.debug("onCommand", cmdStr,  handler);
+	if (handler){
+		handler();
+	}
+};
 
 export class Runner {
 
 
     async init(){
-		logger.info('Init', 1);
-		await initializeOptions();
+        await initGlobal();
+        logger.info('Init', 1);
+        await loadActions('');
 		logger.info('Gl', global);
         browser.tabs.onCreated.addListener(onCreatedTab);
         browser.webNavigation.onBeforeNavigate.addListener(onBeforeNavigate);

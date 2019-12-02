@@ -11,13 +11,19 @@ const {
 const { 
   MustacheReplacer
 } = require('@std/string');
+const { 
+  readFileSync
+} = require('fs');
+const { 
+  Yaml
+} = require('@encoding/yaml');
 
-
-const pkg = {
+const pkg = JSON.parse(readFileSync(path.resolve("./package.json"), "utf8"));
+/* {
   name: "tab-utils",
   version: "1.0.1"
 
-}
+} */
 const template = new MustacheReplacer({
     name: pkg.name,
     version: pkg.version
@@ -38,12 +44,53 @@ const copy = new CopyWebpackPlugin([
   ],
   { 
     copyUnmodified: false, 
+    //logLevel: "debug",
+    context: 'src',
+    
+  }
+);
+
+const manifestDefaults = {
+  manifest_version: 2
+}
+
+/* const ymlToJs = () => {
+  const c = ctx[]
+} */
+const copy2 = () => {
+  const p = new CopyWebpackPlugin([
+  { from: "./manifest.yml",
+   flatten: true,
+    transform: (content) => {
+      const manifestYml = Yaml.parse(content.toString());
+      const manifestData = {
+        name: pkg.name,
+        version: pkg.version,
+        applications: { gecko: { id: `${pkg.name}@jmoudi` }},
+      }
+      const manifestJson = {
+        ...manifestDefaults,
+        ...manifestYml,
+        ...manifestData
+      }
+      console.log(`m`, manifestJson, JSON.stringify(manifestJson));
+      return JSON.stringify(manifestJson)
+      //return template.exec(content.toString()) //Buffer.from(
+    },
+    transformPath(){
+      return 'manifest.json'
+    }
+  }
+  ],
+  { 
+    copyUnmodified: false, 
     logLevel: "debug",
     context: 'src',
     
   }
 );
- 
+ return p
+}
 
 
 const webExt = new WebExtPlugin({
@@ -111,7 +158,8 @@ module.exports = merge(baseConfig(), {
 /*     new TsconfigPathsPlugin({
 
     }), */
-    copy,
-    webExt
+    //copy,
+    copy2()
+    //webExt
   ]
 });
