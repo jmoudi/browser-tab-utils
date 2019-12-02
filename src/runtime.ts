@@ -6,8 +6,8 @@ export const logger = console;
 
 //export const global = {} as any;
 
-declare const global: Global;
-
+//declare const global: Global = {} as never;
+const global: Global = {} as never;
 const app = {
     commands:{
 	"close-duplicate-tabs": closeDuplicateTabs
@@ -15,17 +15,31 @@ const app = {
 
 }
 
-async function initGlobal(){
-    global.debug = false;
-    global.settings = {
-        showNotification: true
-    };
-    global.env = {};
-    global.state = { 
-		initialized: false 
-	};
+async function initGlobal(name = 'TabUtils'){
+    const defaultSettings = {
+        debug: false,
+        showNotification: true,
+        env: process.env
+    }
+    const defaultState = {
+        initialized: false
+    }
+
     //global.actions = {} //new ActionsRegistry();
+    
+    window[name] = {
+        env: {},
+        state: {},
+        settings: {},
+        extension: {}
+    }
+    // @ts-ignore
+    const global: Global = window[name];
     global.extension = await browser.management.getSelf();
+    global.state = defaultState;
+    global.settings = defaultSettings;
+    global.env = process.env;
+    global.debug = false;
     return global;
 }
 export async function init(global: Global) {

@@ -1,5 +1,5 @@
 {
-  "name": "{{name}}",
+  "name": "tab-utils@jmoudi",
 
   "permissions": [
     "<all_urls>",
@@ -29,12 +29,19 @@
     ]
   },
   "commands": {
-    "close-duplicate-tabs": {
+    "tabs.closeDuplicates": {
       "suggested_key": { 
         "default": "Alt+Shift+C" 
       },
           "description": "duplicate"
+    },
+    "tabs.selectNext": {
+      "suggested_key": { 
+        "default": "Alt+E" 
+      },
+      "description": "aduplicate"
     }
+    
   },
 
 

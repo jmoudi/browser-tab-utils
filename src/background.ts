@@ -4,7 +4,7 @@ declare global {
     interface Window {
       TabUtils?: TabUtils;
     }
-  }
+}
 export interface TabUtils {
 
 }
@@ -13,9 +13,9 @@ const extension = {
     name: "TabUtils"
 }
 
-interface TabUtilsOpts {
 
-}
+
+const global: Global = {} as never;
 /**
  * Loads TabUtils global object or returns one, if already loaded. This function is
  * idempotent - you can call it as many times as you like. Throws if not successful.

@@ -2,6 +2,9 @@ type onBeforeNavigateHandler = Parameters<typeof browser.webNavigation.onBeforeN
 type onCreatedHandler = Parameters<typeof browser.tabs.onCreated.addListener>[0];
 type onUpdatedHandler = Parameters<typeof browser.tabs.onUpdated.addListener>[0];
 
+interface TabUtilsOpts {
+
+}
 
 type Tab = browser.tabs.Tab;
 interface State {
@@ -11,7 +14,7 @@ interface Settings {
     showNotification?: boolean; 
     autoCloseTab?: boolean;
 }
-declare interface Global {
+interface Global {
     debug: boolean;
     env: object;
     settings: Settings;

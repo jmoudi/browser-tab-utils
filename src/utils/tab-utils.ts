@@ -1,4 +1,40 @@
 
+
+
+let selectTab = (direction) => {
+    chrome.tabs.query({currentWindow: true}, (tabs) => {
+      if (tabs.length <= 1) {
+        return
+      }
+      chrome.tabs.query({currentWindow: true, active: true}, (currentTabInArray) => {
+        let currentTab = currentTabInArray[0]
+        let toSelect
+        switch (direction) {
+          case 'next':
+            toSelect = tabs[(currentTab.index + 1 + tabs.length) % tabs.length]
+            break
+          case 'previous':
+            toSelect = tabs[(currentTab.index - 1 + tabs.length) % tabs.length]
+            break
+          case 'first':
+            toSelect = tabs[0]
+            break
+          case 'last':
+            toSelect = tabs[tabs.length - 1]
+            break
+          default:
+            let index = parseInt(direction) || 0
+            if (index >= 1 && index <= tabs.length) {
+              toSelect = tabs[index - 1]
+            } else {
+              return
+            }
+        }
+        chrome.tabs.update(toSelect.id, {active: true})
+      })
+    })
+  }
+  
 export function getDuplicates(tabs: Tabs.Tab[]){
  
 }
