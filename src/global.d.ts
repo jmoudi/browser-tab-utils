@@ -1,3 +1,6 @@
+/// <reference types="lodash" />
+/// <reference types="@types/lodash" />
+
 type onBeforeNavigateHandler = Parameters<typeof browser.webNavigation.onBeforeNavigate.addListener>[0];
 type onCreatedHandler = Parameters<typeof browser.tabs.onCreated.addListener>[0];
 type onUpdatedHandler = Parameters<typeof browser.tabs.onUpdated.addListener>[0];

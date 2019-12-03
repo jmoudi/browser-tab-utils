@@ -1,6 +1,7 @@
 import { findDuplicateTabs } from '@/utils/helpers';
 import { logger } from '@/utils/utils';
-
+import { groupBy } from '@std/fp';
+import {Dictionary} from 'lodash';
 
 /* 
 let selectTab = (direction) => {
@@ -120,3 +121,74 @@ export const closeDuplicateTabs = async (opts) => {
 	const res = await findDuplicateTabs();
 	logger.info(`findDuplicateTabs`, res);
 }
+
+export function moveTo(tab: browser.tabs.Tab) {
+    const id = tab.id ? tab.id : 1;
+    if (tab.status !== "complete") {
+
+        browser.windows.update(windowId, {
+            focused: tab.active         // prevent switching to moved tabs
+        });
+        chrome.tabs.update(id, { 
+            active: true,
+            
+        });
+    }
+}
+
+
+    
+export function getSelected(){
+    return browser.tabs.query({ highlighted: true });
+}
+export function getAll(){
+    return browser.windows.getAll({ 
+        windowTypes: ['normal'],
+        populate: true 
+    });
+}
+export function getAllinWindow(){
+    return browser.tabs.query({ 
+        windowTypes: ['normal'],
+        currentWindow: true 
+    });
+}
+
+export async function updateActiveTab(script){
+    const activeTab = await browser.tabs.query({ currentWindow: true, active: true }).then(t => t[0]);
+    if (!activeTab.id){ throw new Error(`tab`); }
+    const code = script.code
+    if (!code){ throw new Error(`code`); }
+    //inject
+    /* tabs.executeScript(activeTab.id, {
+        code: code,
+        runAt: `document_start`
+    }) */
+}
+
+
+ 
+
+const normalizeTabUrl = (url) => url
+
+
+export const getTabs = () => browser.tabs.query({ 
+    windowType: 'normal',
+    status: 'complete'
+});
+
+const getCurId = () => (browser.windows.WINDOW_ID_CURRENT)
+ 
+export const findDuplicateTabs1 = async () => {
+    //const wm = new WeakMap<object, browser.tabs.Tab[]>();
+    const tt = await getTabs();
+    const grouped: Dictionary<browser.tabs.Tab[]> = groupBy(tt, (tab) => {
+        return normalizeTabUrl(tab.url);
+    });
+    return grouped;
+}
+ 
+ /* 
+            if (chrome.runtime.lastError) console.error("getTabs error:", chrome.runtime.lastError.message);
+            resolve(chrome.runtime.lastError ? null : tabs); */
+ 

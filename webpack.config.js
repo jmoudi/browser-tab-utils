@@ -57,7 +57,11 @@ const manifestDefaults = {
 /* const ymlToJs = () => {
   const c = ctx[]
 } */
-const copy2 = () => {
+
+/**
+ * hack until I have created dedicated plugin
+ */
+const createWebExtManifestPlugin = () => {
   const p = new CopyWebpackPlugin([
   { from: "./manifest.yml",
    flatten: true,
@@ -159,7 +163,7 @@ module.exports = merge(baseConfig(), {
 
     }), */
     //copy,
-    copy2()
+    createWebExtManifestPlugin()
     //webExt
   ]
 });
