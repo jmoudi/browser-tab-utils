@@ -25,13 +25,8 @@ const DIST = path.resolve(__dirname, "dist");
 
 const webExt = new WebExtPlugin({
   startUrl: [
-    'about:debugging',
-    //'https://danbooru.donmai.us/posts'
-    //'dist/browser-action.html',
-    //`https://rabe.ch/player/`
-    //`https://www.reddit.com/r/AskProgramming/comments/baxzwe/what_is_the_ethical_thing_to_do_if_ive_found_a/`
-    //`https://github.com/andreicristianpetcu/google_translate_this`
-  ], //, `https://github.com/`], //['__tests__/playground.html'],
+    'about:debugging'
+  ],
   firefox: `/usr/lib/firefox-developer-edition/firefox`,
   sourceDir: DIST,
   firefoxProfile: `/home/jm/.mozilla/firefox/xlpeu8gb.test`,

@@ -30,7 +30,8 @@ const template = new MustacheReplacer({
 });
 const CONTEXT = process.cwd();
 const DIST = path.resolve(process.cwd(), "dist");
-
+let debug = true;
+const EXTENSION_ID = 'tab-utils@jmoudi';
 
 //const copyTransform = (content: string, path: string)
 
@@ -50,8 +51,23 @@ const copy = new CopyWebpackPlugin([
   }
 );
 
-const manifestDefaults = {
-  manifest_version: 2
+
+
+const createWebextensionManifest = (content = '') => {
+  const manifestDefaults = {
+    manifest_version: 2
+  }
+  const manifestYml = Yaml.parse(content.toString());
+      const manifestData = {
+        name: pkg.name,
+        version: pkg.version,
+        applications: { gecko: { id: `${pkg.name}@jmoudi` }},
+      }
+      const manifestJson = {
+        ...manifestDefaults,
+        ...manifestYml,
+        ...manifestData
+      }
 }
 
 /* const ymlToJs = () => {
@@ -66,19 +82,13 @@ const createWebExtManifestPlugin = () => {
   { from: "./manifest.yml",
    flatten: true,
     transform: (content) => {
-      const manifestYml = Yaml.parse(content.toString());
-      const manifestData = {
-        name: pkg.name,
-        version: pkg.version,
-        applications: { gecko: { id: `${pkg.name}@jmoudi` }},
+
+      
+      const manifest = createWebextensionManifest(content);
+      if (debug){
+        console.log(`manifest`, manifest);
       }
-      const manifestJson = {
-        ...manifestDefaults,
-        ...manifestYml,
-        ...manifestData
-      }
-      console.log(`m`, manifestJson, JSON.stringify(manifestJson));
-      return JSON.stringify(manifestJson)
+      return JSON.stringify(manifest)
       //return template.exec(content.toString()) //Buffer.from(
     },
     transformPath(){
@@ -99,14 +109,9 @@ const createWebExtManifestPlugin = () => {
 
 const webExt = new WebExtPlugin({
   startUrl: [
-    'about:devtools-toolbox?type=extension&id=duplicate-tabs%40jmoudi',
+    `about:devtools-toolbox?type=extension&id=${encodeURIComponent(EXTENSION_ID)}`,
     'about:debugging',
-    //'https://danbooru.donmai.us/posts'
-    //'dist/browser-action.html',
-    //`https://rabe.ch/player/`
-    //`https://www.reddit.com/r/AskProgramming/comments/baxzwe/what_is_the_ethical_thing_to_do_if_ive_found_a/`
-    //`https://github.com/andreicristianpetcu/google_translate_this`
-  ], //, `https://github.com/`], //['__tests__/playground.html'],
+  ], 
   firefox: `/usr/lib/firefox-developer-edition/firefox`,
   sourceDir: DIST,
   firefoxProfile: `/home/jm/.mozilla/firefox/c.test`,

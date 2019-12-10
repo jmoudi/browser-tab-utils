@@ -38,6 +38,7 @@ let selectTab = (direction) => {
     })
 }
 
+
  */
 
 /* export function getDuplicates(tabs: Tabs.Tab[]) {
@@ -135,6 +136,13 @@ export function moveTo(tab: browser.tabs.Tab) {
         });
     }
 }
+
+export const moveTabsNew = async (tabIds) => {
+	const res = await browser.tabs.moveInSuccession(tabIds);
+	logger.info(`findDuplicateTabs`, res);
+}
+
+
 
 
     

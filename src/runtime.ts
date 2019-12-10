@@ -3,46 +3,7 @@ import {onCreatedTab,onBeforeNavigate} from '@/handlers';
 
 import {mapKeys,mapValues,reduce} from '@std/fp';
 import { logger } from '@/utils/utils';
-
- 
-async function initGlobal(name = 'TabUtils'){
-    const defaultSettings = {
-        showNotification: true,
-        autoCloseTab: true,
-    }
-    const defaultState = {
-        initialized: false
-    }
-
-    //global.actions = {} //new ActionsRegistry();
-    
-    window[name] = {
-        env: {},
-        state: {},
-        settings: {},
-        extension: {}
-    }
-    // @ts-ignore
-    const global: Global = window[name];
-    global.extension = await browser.management.getSelf();
-    global.state = defaultState;
-    global.settings = defaultSettings;
-    global.env = process.env;
-    global.debug = false;
-    return global;
-}
-export const initExtension = (name, opts?: Global) => {
-    if (typeof window !== 'object'){
-        throw new TypeError('Not in browser-like environment.');
-    }
-    if (!window[name]){
-        // @ts-ignore
-        window[name] = opts //{...opts};
-    } else {
-        return window[name]
-    }
-    return window[name];
-};
+import { initGlobal } from '@/init';
 
 /**
  * Loads TabUtils global object or returns one, if already loaded. This function is

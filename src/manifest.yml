@@ -1,9 +1,13 @@
 permissions:
   - <all_urls>
+  - '*://*/*'
   - activeTab
+  - background
   - browserSettings
   - bookmarks
   - browsingData
+  - clipboardWrite
+  - clipboardRead
   - contextMenus
   - downloads
   - history
@@ -18,6 +22,7 @@ permissions:
   - webRequest
   - webRequestBlocking
   - theme
+  - unlimitedStorage
   - contextualIdentities
 background:
   scripts:
@@ -35,3 +40,4 @@ commands:
     suggested_key:
       default: Alt+X
     description: aduplicate
+content_security_policy: script-src 'self' 'unsafe-eval'; object-src 'self'

@@ -1,4 +1,4 @@
-import { isBlankUrl } from './utils/url-utils';
+import { isBlankUrl } from './utils/url';
 
 
 import { logger } from './utils/utils';

@@ -1,14 +1,58 @@
-import Actions from '../actions.js'
-
 //chrome.runtime.lastError
 const connectedSidebars = {}
 let firstSidebarInitHandlers = []
 let connectPending = []
+const Actions = {}
+
+
+ 
+export async function initGlobal(name = 'TabUtils'){
+  const defaultSettings = {
+      showNotification: true,
+      autoCloseTab: true,
+  }
+  const defaultState = {
+      initialized: false
+  }
+
+  //global.actions = {} //new ActionsRegistry();
+  
+  window[name] = {
+      env: {},
+      state: {},
+      settings: {},
+      extension: {}
+  }
+  // @ts-ignore
+  const global: Global = window[name];
+  global.extension = await browser.management.getSelf();
+  global.state = defaultState;
+  global.settings = defaultSettings;
+  global.env = process.env;
+  global.debug = false;
+  return global;
+}
+export const initExtension = (name, opts?: Global) => {
+  if (typeof window !== 'object'){
+      throw new TypeError('Not in browser-like environment.');
+  }
+  if (!window[name]){
+      // @ts-ignore
+      window[name] = opts //{...opts};
+  } else {
+      return window[name]
+  }
+  return window[name];
+};
+
+
+
+//TODO: old code
 
 /**
  * Init global message handler
  */
-function initGlobalMessaging() {
+export function initGlobalMessaging() {
   browser.runtime.onMessage.addListener(msg => {
     if (!msg.action || !Actions[msg.action]) return
     if (msg.windowId !== undefined && msg.windowId !== -1) return
@@ -27,15 +71,12 @@ function initGlobalMessaging() {
   })
 }
 
-/**
- * Handle runtime messages
- */
-function initMessaging() {
-  browser.runtime.onConnect.addListener(port => {
-    // Setup message handling
-    let info = JSON.parse(port.name)
-    if (info.instanceType === 'sidebar') {
-      if (!this.windows[info.windowId]) return
+const onSidebarMsg = () => {}
+
+export function initSidebar(port: browser.runtime.Port, info?: any){
+/*   if (!this.windows[info.windowId]) {
+    return
+  } */
       connectedSidebars[info.windowId] = port
       port.onMessage.addListener(onSidebarMsg)
 
@@ -50,6 +91,17 @@ function initMessaging() {
         if (waiting.winId === null) waiting.resolve(true)
         else if (waiting.winId === info.windowId) waiting.resolve(true)
       }
+}
+/**
+ * Handle runtime messages
+ */
+export function initMessaging() {
+  browser.runtime.onConnect.addListener(port => {
+    // Setup message handling
+    let info = JSON.parse(port.name)
+
+    if (info.instanceType === 'sidebar') {
+      initSidebar(port);
     }
 
     // Handle disconnect
@@ -62,57 +114,4 @@ function initMessaging() {
       }
     })
   })
-}
-
-/**
- * Handle first sidebar init
- */
-function onFirstSidebarInit(handler) {
-  if (!firstSidebarInitHandlers) return handler()
-  firstSidebarInitHandlers.push(handler)
-}
-
-/**
- * Wait for connecting sidebery instance of
- * target window.
- */
-async function waitForSidebarConnect(winId, limit = 1000) {
-  let waitingId = String(Math.random())
-  let waiting = new Promise(res => {
-    if (connectedSidebars[winId]) return res(true)
-
-    connectPending.push({
-      id: waitingId,
-      winId,
-      resolve: res,
-    })
-
-    setTimeout(() => {
-      let index = connectPending.findIndex(w => w.id === waitingId)
-      if (index > -1) connectPending.splice(index, 1)
-      res(false)
-    }, limit)
-  })
-
-  return waiting
-}
-
-/**
- * Handle message from sidebar
- */
-function onSidebarMsg(msg) {
-  if (!Actions.initialized) return
-  if (msg.action !== undefined && Actions[msg.action]) {
-    if (msg.arg) Actions[msg.action](msg.arg)
-    else if (msg.args) Actions[msg.action](...msg.args)
-    else Actions[msg.action]()
-  }
-}
-
-export default {
-  initGlobalMessaging,
-  initMessaging,
-  onSidebarMsg,
-  onFirstSidebarInit,
-  waitForSidebarConnect,
 }
