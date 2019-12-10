@@ -12,6 +12,7 @@
     "bundle-test": "webpack --config webpack.test.js",
     "tsc:test": "tsc --listEmittedFiles --noEmit",
     "lint": "eslint -c /home/jm/Projects/Modules/config/eslint.react.json",
+    "build:manifest":"ts-node-dev --transpileOnly --respawn --prefer-ts -r '/home/jm/Projects/Modules/ts/node/resolve-paths/src/loadpaths.ts' ./build/convert.ts './src/assets/manifest.json' './src/manifest.yml'",
     "test": "jest --watch",
     "run": "web-ext run --source-dir=./dist --start-url=about:debugging",
     "serve": "webpack-dev-server --config webpack.config.js",
@@ -50,5 +51,12 @@
     "url-parse-lax": "^4.0.0",
     "url-template": "^2.0.8",
     "validator": "^11.1.0"
-  }
+  },
+  "private": true,
+  "author": "Jonas Moudi <jonas.moudi@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmoudi/browser-tab-utils.git"
+  },
+  "license": "MIT"
 }

@@ -11,7 +11,7 @@ import path from 'path';
 
 
 
-async function main(){
+async function convertJsonToYaml(){
     const src = process.argv[2];
     const dest = process.argv[3];
     //const manifestYml = Yaml.parse(readFileSync(path.resolve(src), "utf8"));
@@ -26,7 +26,9 @@ async function main(){
     } else {
         await writeFileAtomic(destP, manifestYmlStr, 'utf8');
     }
-//dest
 }
-main()
+async function main(){
+    await convertJsonToYaml();
+}
+main().catch(err => console.error(err));
 
