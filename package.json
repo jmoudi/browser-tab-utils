@@ -42,7 +42,7 @@
     "lodash": "^4.17.15",
     "micromatch": "",
     "mobx": "^5.15.0",
-    "normalize-url": "^4.5.0",
+    "normalize-url": "^4.5.1",
     "parse-path": "^4.0.1",
     "parse-url": "^5.0.1",
     "source-map-loader": "^0.2.4",
