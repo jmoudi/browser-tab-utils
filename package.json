@@ -50,7 +50,7 @@
     "url-join": "^4.0.1",
     "url-parse-lax": "^4.0.0",
     "url-template": "^2.0.8",
-    "validator": "^11.1.0"
+    "validator": "^13.7.0"
   },
   "private": true,
   "author": "Jonas Moudi <jonas.moudi@gmail.com>",
